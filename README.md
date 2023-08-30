@@ -1,4 +1,6 @@
-# React + Vite
+# MEME Generator
+  - I created this when im doing the React Course and use the state
+## React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
