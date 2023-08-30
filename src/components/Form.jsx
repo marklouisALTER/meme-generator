@@ -1,22 +1,28 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import memesData from './memesData'
+import { FaGithubSquare } from 'react-icons/fa'
 export const Form = () => {
         const [meme, setMeme] = useState({
                 topText: "",
                 bottomText: "",
                 randomImage: "",
         })
-        const [allMemeImages, setAllMemeImage] = useState(memesData);
+
+        const [allMemeImages, setAllMemeImage] = useState({});
+
+
+
         function getRandImage(){
-                const imageArray = allMemeImages.data.memes;
-                const randomImage = (Math.floor(Math.random() * imageArray.length) + 1)
-                const urlImage = imageArray[randomImage].url;
+                const randomImage = (Math.floor(Math.random() * allMemeImages.length) + 1)
+                const urlImage = allMemeImages[randomImage].url;
                 setMeme(prevState => ({
                         ...prevState,
                        
                         randomImage: urlImage
                 }))
         }
+
+
         function handleClick(event) {
                 const {name, value} = event.target
                 setMeme(prevState => ({
@@ -25,7 +31,18 @@ export const Form = () => {
 
                 }))
         }
-        // console.log(meme)
+
+
+        useEffect(()=> {
+                async function getMeme(){
+                        const data = await fetch("https://api.imgflip.com/get_memes")
+                        const response = await data.json()
+                        setAllMemeImage(response.data.memes)
+                }
+                getMeme()
+        },[])
+
+        
   return (
     <div>
                 <div className='grid grid-cols-2 gap-5 px-[5%] mt-[4rem] md:px-[20%]'>
@@ -98,6 +115,12 @@ export const Form = () => {
                 >
                         {meme.bottomText}
                 </p> 
+        </div>
+        <div className='flex items-center justify-center'>
+        <FaGithubSquare className='text-2xl text-blue-600'/>
+                <h1 className='font-primary text-gray-500 pl-2 text-center'>Follow me on Github : 
+                        <a className='text-black pl-2 hover:underline hover:text-blue-800' href="https://github.com/marklouisALTER" target="_blank">marklouisALTER</a>
+                </h1>
         </div>
     </div>
   )
